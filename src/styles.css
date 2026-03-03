@@ -65,6 +65,176 @@
   }
 }
 
+/* Floating Hearts Game */
+@keyframes floatRandom {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(calc(cos(var(--float-angle)) * 50px), calc(sin(var(--float-angle)) * 50px)) rotate(90deg);
+  }
+  50% {
+    transform: translate(calc(cos(var(--float-angle)) * 100px), calc(sin(var(--float-angle)) * 100px)) rotate(180deg);
+  }
+  75% {
+    transform: translate(calc(cos(var(--float-angle)) * 50px), calc(sin(var(--float-angle)) * 50px)) rotate(270deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+.floating-heart-game {
+  animation: floatRandom infinite ease-in-out;
+  transition: transform 0.1s ease;
+}
+
+.floating-heart-game:active .heart-icon {
+  transform: scale(0.9);
+}
+
+.tap-animation {
+  animation: tapEffect 0.6s ease-out !important;
+}
+
+@keyframes tapEffect {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  30% {
+    transform: scale(0.8) rotate(90deg);
+  }
+  60% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+/* Heart-shaped image container */
+.heart-image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  animation: popIn 0.5s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-shaped-image {
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  clip-path: polygon(
+    50% 5%,
+    55% 2%,
+    60% 0%,
+    65% 0%,
+    70% 2%,
+    75% 5%,
+    79% 9%,
+    83% 14%,
+    86% 20%,
+    88% 26%,
+    89% 32%,
+    89% 38%,
+    88% 44%,
+    86% 50%,
+    83% 56%,
+    79% 62%,
+    74% 68%,
+    68% 74%,
+    62% 79%,
+    56% 84%,
+    52% 88%,
+    50% 90%,
+    48% 88%,
+    44% 84%,
+    38% 79%,
+    32% 74%,
+    26% 68%,
+    21% 62%,
+    17% 56%,
+    14% 50%,
+    12% 44%,
+    11% 38%,
+    11% 32%,
+    12% 26%,
+    14% 20%,
+    17% 14%,
+    21% 9%,
+    25% 5%,
+    30% 2%,
+    35% 0%,
+    40% 0%,
+    45% 2%
+  );
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes popOut {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3) rotate(180deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.pop-out-animation {
+  animation: popOut 0.6s ease-out forwards !important;
+}
+
+.heart-icon {
+  animation: pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(219, 39, 119, 0.5));
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(219, 39, 119, 0.5));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 20px rgba(219, 39, 119, 0.8));
+  }
+}
+
+/* Mobile adjustments for floating hearts game */
+@media (max-width: 768px) {
+  .floating-heart-game {
+    transform: scale(0.7);
+  }
+  
+  .heart-shaped-image {
+    width: 130%;
+    height: 130%;
+  }
+}
+
 /* Heart shape for collage */
 .heart-container {
   position: relative;

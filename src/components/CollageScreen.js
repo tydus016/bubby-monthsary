@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { images, heartPattern } from '../constants';
 import { distributeImagesForHeart } from '../utils';
 import GalleryModal from './GalleryModal';
+import FloatingHeartsGame from './FloatingHeartsGame';
 
 const CollageScreen = () => {
   const [galleryOpen, setGalleryOpen] = useState(false);
@@ -86,6 +87,9 @@ const CollageScreen = () => {
           </div>
         </div>
       </div>
+
+      {/* Floating Hearts Game */}
+      <FloatingHeartsGame />
 
       <GalleryModal
         isOpen={galleryOpen}
