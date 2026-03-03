@@ -34,8 +34,10 @@ const FloatingHeartsGame = () => {
 
     // Cleanup timers on unmount
     return () => {
-      Object.values(timersRef.current).forEach(timer => clearTimeout(timer));
+      const timers = timersRef.current;
+      Object.values(timers).forEach(timer => clearTimeout(timer));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const popOutHeart = (heartId) => {

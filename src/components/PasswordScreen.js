@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const PasswordScreen = ({ onCorrectPassword }) => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -40,7 +40,7 @@ const PasswordScreen = ({ onCorrectPassword }) => {
     } else if (cooldownActive && cooldownTime === 0) {
       endCooldown();
     }
-  }, [cooldownTime]);
+  }, [cooldownTime, cooldownActive, endCooldown]);
 
   const handleNumberClick = (num) => {
     if (cooldownActive) return;
@@ -55,7 +55,20 @@ const PasswordScreen = ({ onCorrectPassword }) => {
     setErrorMessage('');
   };
 
-  const checkPassword = () => {
+  const startCooldown = useCallback(() => {
+    setCooldownActive(true);
+    setCooldownTime(30);
+    setErrorMessage('Too many wrong attempts!');
+  }, []);
+
+  const endCooldown = useCallback(() => {
+    setCooldownActive(false);
+    setAttempts(0);
+    setCurrentPassword('');
+    setErrorMessage('');
+  }, []);
+
+  const checkPassword = useCallback(() => {
     if (currentPassword.length === 0) return;
 
     if (currentPassword === CORRECT_PASSWORD) {
@@ -70,20 +83,7 @@ const PasswordScreen = ({ onCorrectPassword }) => {
         setCurrentPassword('');
       }
     }
-  };
-
-  const startCooldown = () => {
-    setCooldownActive(true);
-    setCooldownTime(30);
-    setErrorMessage('Too many wrong attempts!');
-  };
-
-  const endCooldown = () => {
-    setCooldownActive(false);
-    setAttempts(0);
-    setCurrentPassword('');
-    setErrorMessage('');
-  };
+  }, [currentPassword, CORRECT_PASSWORD, onCorrectPassword, attempts, startCooldown]);
 
   return (
     <div className="w-full max-w-md relative z-10">
