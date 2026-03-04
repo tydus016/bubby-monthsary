@@ -9,52 +9,7 @@ const PasswordScreen = ({ onCorrectPassword }) => {
 
   const CORRECT_PASSWORD = '090323';
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (cooldownActive) return;
-
-      if (e.key >= '0' && e.key <= '9') {
-        if (currentPassword.length < 6) {
-          setCurrentPassword(prev => prev + e.key);
-        }
-      } else if (e.key === 'Enter') {
-        checkPassword();
-      } else if (e.key === 'Backspace') {
-        setCurrentPassword(prev => prev.slice(0, -1));
-      } else if (e.key === 'Escape') {
-        setCurrentPassword('');
-        setErrorMessage('');
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPassword, cooldownActive]);
-
-  useEffect(() => {
-    if (cooldownTime > 0) {
-      const timer = setTimeout(() => {
-        setCooldownTime(cooldownTime - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else if (cooldownActive && cooldownTime === 0) {
-      endCooldown();
-    }
-  }, [cooldownTime, cooldownActive, endCooldown]);
-
-  const handleNumberClick = (num) => {
-    if (cooldownActive) return;
-    if (currentPassword.length < 6) {
-      setCurrentPassword(prev => prev + num);
-    }
-  };
-
-  const handleClear = () => {
-    if (cooldownActive) return;
-    setCurrentPassword('');
-    setErrorMessage('');
-  };
-
+  // Define all callbacks before useEffect hooks
   const startCooldown = useCallback(() => {
     setCooldownActive(true);
     setCooldownTime(30);
@@ -84,6 +39,53 @@ const PasswordScreen = ({ onCorrectPassword }) => {
       }
     }
   }, [currentPassword, CORRECT_PASSWORD, onCorrectPassword, attempts, startCooldown]);
+
+  // Effects that depend on the callbacks above
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (cooldownActive) return;
+
+      if (e.key >= '0' && e.key <= '9') {
+        if (currentPassword.length < 6) {
+          setCurrentPassword(prev => prev + e.key);
+        }
+      } else if (e.key === 'Enter') {
+        checkPassword();
+      } else if (e.key === 'Backspace') {
+        setCurrentPassword(prev => prev.slice(0, -1));
+      } else if (e.key === 'Escape') {
+        setCurrentPassword('');
+        setErrorMessage('');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentPassword, cooldownActive, checkPassword]);
+
+  useEffect(() => {
+    if (cooldownTime > 0) {
+      const timer = setTimeout(() => {
+        setCooldownTime(cooldownTime - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (cooldownActive && cooldownTime === 0) {
+      endCooldown();
+    }
+  }, [cooldownTime, cooldownActive, endCooldown]);
+
+  const handleNumberClick = (num) => {
+    if (cooldownActive) return;
+    if (currentPassword.length < 6) {
+      setCurrentPassword(prev => prev + num);
+    }
+  };
+
+  const handleClear = () => {
+    if (cooldownActive) return;
+    setCurrentPassword('');
+    setErrorMessage('');
+  };
 
   return (
     <div className="w-full max-w-md relative z-10">
